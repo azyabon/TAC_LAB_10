@@ -194,7 +194,7 @@ function GameTheorySolution() {
     const cherryProfit = [100 * data.cherry[0], 100 * data.cherry[1], 100 * data.cherry[2], 100 * data.cherry[3]];
 
     const paymentMatrix = [abricotProfit, pearProfit, appleProfit, cherryProfit];
-    const simplifiedPaymentMatrix = simplifyPaymentMatrix(paymentMatrix);
+    const simplifiedPaymentMatrix = simplifyPaymentMatrix(paymentMatrix.map(row => row.map(value => Math.round(value / 10) * 10)));
 
     const bayesCriterion = calculateBayesCriterion(paymentMatrix, data.probabilities);
     const laplaceCriterion = calculateLaplaceCriterion(simplifiedPaymentMatrix);
@@ -205,10 +205,10 @@ function GameTheorySolution() {
     const riskMatrix = calculateRiskMatrix(simplifiedPaymentMatrix);
 
     setResults({
-      paymentMatrix,
-      simplifiedPaymentMatrix,
+      paymentMatrix: paymentMatrix.map(row => row.map(value => `${value}т`)),
+      simplifiedPaymentMatrix: simplifiedPaymentMatrix.map(row => row.map(value => `${value}т`)),
       solutionType: getSolutionType(paymentMatrix),
-      riskMatrix,
+      riskMatrix: riskMatrix.map(row => row.map(value => `${value}т`)),
       bayesCriterion,
       laplaceCriterion,
       waldCriterion,
@@ -231,28 +231,28 @@ function GameTheorySolution() {
         </thead>
         <tbody>
           <tr>
-            <td><input type="number" value={data.abricot[0]} onChange={(e) => handleChange(e, 0, 'abricot')} /></td>
-            <td><input type="number" value={data.abricot[1]} onChange={(e) => handleChange(e, 1, 'abricot')} /></td>
-            <td><input type="number" value={data.abricot[2]} onChange={(e) => handleChange(e, 2, 'abricot')} /></td>
-            <td><input type="number" value={data.abricot[3]} onChange={(e) => handleChange(e, 3, 'abricot')} /></td>
+            <td><input type="number" value={data.abricot[0]} onChange={(e) => handleChange(e, 0, 'abricot')} />т</td>
+            <td><input type="number" value={data.abricot[1]} onChange={(e) => handleChange(e, 1, 'abricot')} />т</td>
+            <td><input type="number" value={data.abricot[2]} onChange={(e) => handleChange(e, 2, 'abricot')} />т</td>
+            <td><input type="number" value={data.abricot[3]} onChange={(e) => handleChange(e, 3, 'abricot')} />т</td>
           </tr>
           <tr>
-            <td><input type="number" value={data.pear[0]} onChange={(e) => handleChange(e, 0, 'pear')} /></td>
-            <td><input type="number" value={data.pear[1]} onChange={(e) => handleChange(e, 1, 'pear')} /></td>
-            <td><input type="number" value={data.pear[2]} onChange={(e) => handleChange(e, 2, 'pear')} /></td>
-            <td><input type="number" value={data.pear[3]} onChange={(e) => handleChange(e, 3, 'pear')} /></td>
+            <td><input type="number" value={data.pear[0]} onChange={(e) => handleChange(e, 0, 'pear')} />т</td>
+            <td><input type="number" value={data.pear[1]} onChange={(e) => handleChange(e, 1, 'pear')} />т</td>
+            <td><input type="number" value={data.pear[2]} onChange={(e) => handleChange(e, 2, 'pear')} />т</td>
+            <td><input type="number" value={data.pear[3]} onChange={(e) => handleChange(e, 3, 'pear')} />т</td>
           </tr>
           <tr>
-            <td><input type="number" value={data.apple[0]} onChange={(e) => handleChange(e, 0, 'apple')} /></td>
-            <td><input type="number" value={data.apple[1]} onChange={(e) => handleChange(e, 1, 'apple')} /></td>
-            <td><input type="number" value={data.apple[2]} onChange={(e) => handleChange(e, 2, 'apple')} /></td>
-            <td><input type="number" value={data.apple[3]} onChange={(e) => handleChange(e, 3, 'apple')} /></td>
+            <td><input type="number" value={data.apple[0]} onChange={(e) => handleChange(e, 0, 'apple')} />т</td>
+            <td><input type="number" value={data.apple[1]} onChange={(e) => handleChange(e, 1, 'apple')} />т</td>
+            <td><input type="number" value={data.apple[2]} onChange={(e) => handleChange(e, 2, 'apple')} />т</td>
+            <td><input type="number" value={data.apple[3]} onChange={(e) => handleChange(e, 3, 'apple')} />т</td>
           </tr>
           <tr>
-            <td><input type="number" value={data.cherry[0]} onChange={(e) => handleChange(e, 0, 'cherry')} /></td>
-            <td><input type="number" value={data.cherry[1]} onChange={(e) => handleChange(e, 1, 'cherry')} /></td>
-            <td><input type="number" value={data.cherry[2]} onChange={(e) => handleChange(e, 2, 'cherry')} /></td>
-            <td><input type="number" value={data.cherry[3]} onChange={(e) => handleChange(e, 3, 'cherry')} /></td>
+            <td><input type="number" value={data.cherry[0]} onChange={(e) => handleChange(e, 0, 'cherry')} />т</td>
+            <td><input type="number" value={data.cherry[1]} onChange={(e) => handleChange(e, 1, 'cherry')} />т</td>
+            <td><input type="number" value={data.cherry[2]} onChange={(e) => handleChange(e, 2, 'cherry')} />т</td>
+            <td><input type="number" value={data.cherry[3]} onChange={(e) => handleChange(e, 3, 'cherry')} />т</td>
           </tr>
         </tbody>
       </table>
@@ -394,17 +394,17 @@ function GameTheorySolution() {
             </tbody>
           </table>
           <h3>Рекомендации:</h3>
-          <Results
+          {/* <Results
             criterion="Байеса"
             recommendation={results.bayesCriterion.recommendedStrategy}
             maxValue={results.bayesCriterion.maxValue}
-          />
+          /> */}
           <Results
             criterion="Лапласа"
             recommendation={results.laplaceCriterion.recommendedStrategy}
             maxValue={results.laplaceCriterion.maxValue}
           />
-          <Results
+          {/* <Results
             criterion="Вальда"
             recommendation={results.waldCriterion.recommendedStrategy}
             maxValue={results.waldCriterion.maxMinValue}
@@ -417,8 +417,8 @@ function GameTheorySolution() {
           <Results
             criterion="Гурвица"
             recommendation={results.hurwiczCriterion.recommendedStrategy}
-            maxValue={results.hurwiczCriterion.maxHurwiczValue}
-          />
+            maxValue={results.hurwiczCriterion.maxHurwiczValue} */}
+          {/* /> */}
         </>
       )}
     </div>
